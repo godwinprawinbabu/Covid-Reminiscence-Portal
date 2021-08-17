@@ -1,12 +1,17 @@
 package com.application.portal.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import com.application.portal.model.AuditModel;
 
@@ -23,6 +28,15 @@ public class Centres extends AuditModel implements Serializable{
     private String state;
     private String district;
     private String phone;
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "centres", orphanRemoval = true)
+    private Set<Doses> doses = new HashSet<>();
+    
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "centres", orphanRemoval = true)
+    private Set<Appointment> appointments = new HashSet<>();
     
     
     
@@ -83,6 +97,26 @@ public class Centres extends AuditModel implements Serializable{
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+
+	public Set<Doses> getDoses() {
+		return doses;
+	}
+
+
+	public void setDoses(Set<Doses> doses) {
+		this.doses = doses;
+	}
+
+
+	public Set<Appointment> getAppointments() {
+		return appointments;
+	}
+
+
+	public void setAppointments(Set<Appointment> appointments) {
+		this.appointments = appointments;
 	}
 
     

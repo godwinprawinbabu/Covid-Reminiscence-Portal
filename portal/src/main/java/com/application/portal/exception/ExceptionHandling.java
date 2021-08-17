@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.application.portal.domain.HttpResponse;
+import com.application.portal.exception.domain.DosesNotAvailableException;
 import com.application.portal.exception.domain.EmailExistException;
 import com.application.portal.exception.domain.EmailNotFoundException;
 import com.application.portal.exception.domain.UserNotFoundException;
@@ -88,6 +89,11 @@ public class ExceptionHandling implements ErrorController {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<HttpResponse> userNotFoundException(UserNotFoundException exception) {
+        return createHttpResponse(BAD_REQUEST, exception.getMessage());
+    }
+    
+    @ExceptionHandler(DosesNotAvailableException.class)
+    public ResponseEntity<HttpResponse> dosesNotAvailableException(DosesNotAvailableException exception) {
         return createHttpResponse(BAD_REQUEST, exception.getMessage());
     }
 

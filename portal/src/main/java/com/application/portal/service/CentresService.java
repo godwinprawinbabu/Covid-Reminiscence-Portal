@@ -15,6 +15,7 @@ import com.application.portal.repository.CentresRepository;
 @Transactional
 public class CentresService {
 	private CentresRepository centresRepository;
+
 	
     @Autowired
     public CentresService(CentresRepository centresRepository) {
@@ -41,5 +42,12 @@ public class CentresService {
 		centresRepository.save(centres);
 		return centres;
 	}
+	
+    public void deleteCentres(Long centresId) throws IOException {
+        Centres centres = centresRepository.findById(centresId).get();
+        if(null!=centres)
+        centresRepository.deleteById(centres.getId());
+    }
+
 
 }

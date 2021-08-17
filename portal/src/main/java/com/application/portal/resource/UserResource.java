@@ -38,6 +38,8 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("/user")
 public class UserResource extends ExceptionHandling {
     public static final String EMAIL_SENT = "An email with a new password was sent to: ";
+    public static final String CHANGE_PASSWORD_EMAIL_SENT = "An email with changed password was sent to: ";
+
     public static final String USER_DELETED_SUCCESSFULLY = "User deleted successfully";
     private AuthenticationManager authenticationManager;
     private UserService userService;
@@ -102,6 +104,12 @@ public class UserResource extends ExceptionHandling {
         return new ResponseEntity<>(users, OK);
     }
 
+    @PutMapping("/changepassword/{email}")
+    public ResponseEntity<HttpResponse> changePassword(@PathVariable("email") String email,@RequestParam("newPassword") String newPassword) throws MessagingException, EmailNotFoundException {
+        userService.changePassword(email, newPassword);
+        return response(OK, CHANGE_PASSWORD_EMAIL_SENT + email);
+    }
+    
     @GetMapping("/resetpassword/{email}")
     public ResponseEntity<HttpResponse> resetPassword(@PathVariable("email") String email) throws MessagingException, EmailNotFoundException {
         userService.resetPassword(email);

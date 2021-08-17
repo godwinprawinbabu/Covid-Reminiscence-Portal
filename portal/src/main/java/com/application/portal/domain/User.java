@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class User implements Serializable {
@@ -28,10 +30,15 @@ public class User implements Serializable {
     private String[] authorities;
     private boolean isActive;
     private boolean isNotLocked;
+    private boolean isCentre;
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "user", orphanRemoval = true)
+    private Set<Appointment> appointments = new HashSet<>();
 
     public User(){}
 
-    public User(Long id, String userId, String firstName, String lastName, String username, String password, String email, Date lastLoginDate, Date lastLoginDateDisplay, Date joinDate, String role, String[] authorities, boolean isActive, boolean isNotLocked) {
+    public User(Long id, String userId, String firstName, String lastName, String username, String password, String email, Date lastLoginDate, Date lastLoginDateDisplay, Date joinDate, String role, String[] authorities, boolean isActive, boolean isNotLocked, boolean isCentre) {
         this.id = id;
         this.userId = userId;
         this.firstName = firstName;
@@ -47,6 +54,7 @@ public class User implements Serializable {
         this.authorities = authorities;
         this.isActive = isActive;
         this.isNotLocked = isNotLocked;
+        this.isCentre = isCentre;
     }
 
     public Long getId() {
@@ -168,4 +176,22 @@ public class User implements Serializable {
     public void setNotLocked(boolean notLocked) {
         isNotLocked = notLocked;
     }
+
+	public boolean isCentre() {
+		return isCentre;
+	}
+
+	public void setCentre(boolean isCentre) {
+		this.isCentre = isCentre;
+	}
+
+	public Set<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(Set<Appointment> appointments) {
+		this.appointments = appointments;
+	}
+    
+    
 }
